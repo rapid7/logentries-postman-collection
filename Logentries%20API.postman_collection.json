@@ -1,0 +1,640 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Logentries API",
+		"_postman_id": "524f8d6f-bdfe-da81-bd25-ea7a9af7a2a9",
+		"description": "The Logentries REST API provides a powerful way for your users and systems to programmatically manipulate the Logentries platform without accessing the user interface.\n\nThe documentation for the endpoints as well as example responses can be found at [https://docs.logentries.com/docs/rest-api](https://docs.logentries.com/docs/rest-api?source=postman)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Example Queries",
+			"description": "You'll need to click on the continue link for these queries if they don't complete in the original query",
+			"item": [
+				{
+					"name": "Get all events today",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;\ntests[\"Response time is less than 300ms\"] = responseTime < 300;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"A continue link is there\"] = jsonData.links[0].rel === \"Self\";\ntests[\"leql statement is good\"] = jsonData.leql.statement === \"where(/.*/)\";\ntests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"Today\";\n\npostman.setEnvironmentVariable(\"continue_link\", jsonData.links[0].href);\n"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/query/logs",
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read-only-key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"logs\": [\n    \"{{log_id}}\"\n  ],\n  \"leql\": {\n    \"during\": {\n      \"time_range\" : \"Today\"\n    },\n    \"statement\" : \"where(/.*/)\"\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Count events yesterday",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;\ntests[\"Response time is less than 300ms\"] = responseTime < 300;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"A continue link is there\"] = jsonData.links[0].rel === \"Self\";\ntests[\"leql statement is good\"] = jsonData.leql.statement === \"calculate(count)\";\ntests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"yesterday\";\n\npostman.setEnvironmentVariable(\"continue_link\", jsonData.links[0].href);\n"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/query/logs",
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read-only-key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"logs\": [\n    \"{{log_id}}\"\n  ],\n  \"leql\": {\n    \"during\": {\n      \"time_range\" : \"yesterday\"\n    },\n    \"statement\": \"calculate(count)\"\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get average values of key per hour today",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;\ntests[\"Response time is less than 300ms\"] = responseTime < 300;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"A continue link is there\"] = jsonData.links[0].rel === \"Self\";\ntests[\"leql statement is good\"] = jsonData.leql.statement === \"calculate(average:service) timeslice(1h)\";\ntests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"today\";\n\npostman.setEnvironmentVariable(\"continue_link\", jsonData.links[0].href);\n"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/query/logs",
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read-only-key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"logs\": [\n    \"{{log_id}}\"\n  ],\n  \"leql\": {\n    \"during\": {\n      \"time_range\" : \"today\"\n    },\n    \"statement\": \"calculate(average:service) timeslice(1h)\"\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get standard deviation of key's value per hour today",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;\ntests[\"Response time is less than 300ms\"] = responseTime < 300;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"A continue link is there\"] = jsonData.links[0].rel === \"Self\";\ntests[\"leql statement is good\"] = jsonData.leql.statement === \"calculate(standarddeviation:service) timeslice(1h)\";\ntests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"today\";\n\npostman.setEnvironmentVariable(\"continue_link\", jsonData.links[0].href);\n"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/query/logs",
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read-only-key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"logs\": [\n    \"{{log_id}}\"\n  ],\n  \"leql\": {\n    \"during\": {\n      \"time_range\" : \"today\"\n    },\n    \"statement\": \"calculate(standarddeviation:service) timeslice(1h)\"\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Log Management",
+			"description": "",
+			"item": [
+				{
+					"name": "Get all Logs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"A not empty array of tags is returned\"] = jsonData.logs.length > 0;"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/management/logs",
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read-only-key}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Get a list of all Logs for a given account"
+					},
+					"response": []
+				},
+				{
+					"name": "Get specific log details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"log_id matches expected log id\"] = jsonData.log.id === environment.log_id;\ntests[\"log is called log1\"] = jsonData.log.name === \"Log1\";\ntests[\"there are no structures applied\"] = jsonData.log.structures.length === 0;\ntests[\"The log is in at least 1 log set\"] = jsonData.log.groups.length > 0;\n"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/management/logs/{{log_id}}",
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read-only-key}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Make a new log",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"log has correct name\"] = jsonData.log.name === \"Postman New Log\";\ntests[\"there are no structures applied\"] = jsonData.log.structures.length === 0;\ntests[\"The log is in no log sets\"] = jsonData.log.groups.length === 0;\ntests[\"I get a log token for the new log\"] = jsonData.log.tokens.length > 0;\n\npostman.setEnvironmentVariable(\"new_log_id\", jsonData.log.id);\n"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/management/logs/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read-write-key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"log\": {\n    \"name\": \"Postman New Log\",\n    \"groups\": []\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Edit new log name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"log is renamed\"] = jsonData.log.name === \"Postman changed name\";\n\npostman.setEnvironmentVariable(\"new_log_id\", jsonData.log.id);\n"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/management/logs/{{new_log_id}}",
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read-write-key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"log\": {\n    \"name\": \"Postman changed name\"\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete newly created log",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 204\"] = responseCode.code === 204;\ntests[\"Response time is less than 1s\"] = responseTime < 1000;\n\npostman.clearEnvironmentVariable(\"new_log_id\");\n"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/management/logs/{{new_log_id}}",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read-write-key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"log\": {\n    \"name\": \"Postman New Log\",\n    \"groups\": []\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Query with continue set up",
+			"description": "",
+			"item": [
+				{
+					"name": "Query log for events",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;\ntests[\"Response time is less than 300ms\"] = responseTime < 300;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"A continue link is there\"] = jsonData.links[0].rel === \"Self\";\ntests[\"leql statement is good\"] = jsonData.leql.statement === \"where(/.*/)\";\ntests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"Today\";\n\npostman.setEnvironmentVariable(\"continue_link\", jsonData.links[0].href);"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/query/logs",
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read-only-key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"logs\": [\n    \"{{log_id}}\"\n  ],\n  \"leql\": {\n    \"during\": {\n      \"time_range\": \"Today\"\n    },\n    \"statement\": \"where(/.*/)\"\n  }\n}"
+						},
+						"description": "Get a list of all Tags for a given account"
+					},
+					"response": []
+				},
+				{
+					"name": "Run Continue call",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "postman.clearEnvironmentVariable(\"continue_link\");\n\ntests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 300ms\"] = responseTime < 300;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"leql statement is good\"] = jsonData.leql.statement === \"where(/.*/)\";\ntests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"Today\";\n\n\ntests[\"assert we checked the correct log\"] = jsonData.logs[0] === environment.log_id;\ntests[\"assert we get some events back\"] = jsonData.events.length > 0;"
+							}
+						}
+					],
+					"request": {
+						"url": "{{continue_link}}",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tag Management",
+			"description": "",
+			"item": [
+				{
+					"name": "Get all Tags",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 200;\ntests[\"Response time is less than 2s\"] = responseTime < 2000;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"A not empty array of tags is returned\"] = jsonData.tags.length > 0;\n"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/management/tags",
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read-only-key}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Get a list of all Tags for a given account"
+					},
+					"response": []
+				},
+				{
+					"name": "Create new tag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\ntests[\"Response time is less than 2s\"] = responseTime < 2000;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"Type is alert\"] = jsonData.tag.type === \"Alert\";\ntests[\"Name is correct\"] = jsonData.tag.name === \"Postman Test Tag\";\ntests[\"Source is correct\"] = jsonData.tag.sources[0].id === environment.log_id;\ntests[\"Pattern is correct\"] = jsonData.tag.patterns[0] === \"/postman_testing_tag/\";\n\npostman.setEnvironmentVariable(\"new_tag_id\", jsonData.tag.id);\n"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/management/tags",
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read-write-key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"tag\": {\n    \"actions\": [],\n    \"labels\": [\n\t    {\n\t      \"id\": \"1eb0ecb1-42be-4af3-8ad8-d0268ac9a3ea\",\n\t      \"sn\": 1488,\n\t      \"name\": \"Network Error\",\n\t      \"color\": \"fc0020\",\n\t      \"reserved\": false\n\t    }\n    ],\n    \"name\": \"Postman Test Tag\",\n    \"patterns\": [\n      \"/postman_testing_tag/\"\n    ],\n    \"sources\": [\n      {\n        \"id\": \"{{log_id}}\"\n      }\n    ],\n    \"type\": \"Alert\"\n  }\n}"
+						},
+						"description": "Get a list of all Tags for a given account"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Tag to have 2nd pattern",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 2s\"] = responseTime < 2000;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"Name is correct\"] = jsonData.tag.name === \"Postman new name\";"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/management/tags/{{new_tag_id}}",
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read-write-key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"tag\": {\n   \"name\": \"Postman new name\"\n  }\n}"
+						},
+						"description": "Get a list of all Tags for a given account"
+					},
+					"response": []
+				},
+				{
+					"name": "Investigate newly created Tag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 200;\ntests[\"Response time is less than 2s\"] = responseTime < 2000;\n"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/management/tags/{{new_tag_id}}",
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read-write-key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"tag\": {\n   \"name\": [\n      \"postman new name\"\n    ]\n  }\n}"
+						},
+						"description": "Get a list of all Tags for a given account"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Labels for newly created tag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 200;\ntests[\"Response time is less than 2s\"] = responseTime < 2000;\n"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/management/tags/{{new_tag_id}}/labels",
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read-write-key}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete newly created tag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 2s\"] = responseTime < 2000;\n\npostman.clearEnvironmentVariable(\"new_tag_id\");\n"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/management/tags/{{new_tag_id}}",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read-write-key}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Get a list of all Tags for a given account"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Labels",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 200;\ntests[\"Response time is less than 2s\"] = responseTime < 2000;\n"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/management/labels",
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read-write-key}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "get rate limits",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"Status code is 202\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"Query limit is 1000\"] = jsonData.endpoints.query.limit === 1000;\ntests[\"Query Remaining is over 900 \"] = jsonData.endpoints.query.remaining > 900;"
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/rate_limit/endpoints/{{read-only-key}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "x-api-key",
+						"value": "{{read-only-key}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"logs\": [\"cee46d63-b859-4046-ae4b-9e8368658bfe\"],\n  \"leql\": {\n    \"during\": {\n      \"time_range\": \"last 2 min\"\n    },\n    \"statement\": \"where(/.*/)\"\n  }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
