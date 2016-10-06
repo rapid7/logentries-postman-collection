@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "Logentries API",
-		"_postman_id": "524f8d6f-bdfe-da81-bd25-ea7a9af7a2a9",
+		"_postman_id": "add73d67-b346-0fcc-3607-3fe97f05e088",
 		"description": "The Logentries REST API provides a powerful way for your users and systems to programmatically manipulate the Logentries platform without accessing the user interface.\n\nThe documentation for the endpoints as well as example responses can be found at [https://docs.logentries.com/docs/rest-api](https://docs.logentries.com/docs/rest-api?source=postman)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -18,7 +18,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;\ntests[\"Response time is less than 300ms\"] = responseTime < 300;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"A continue link is there\"] = jsonData.links[0].rel === \"Self\";\ntests[\"leql statement is good\"] = jsonData.leql.statement === \"where(/.*/)\";\ntests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"Today\";\n\npostman.setEnvironmentVariable(\"continue_link\", jsonData.links[0].href);\n"
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;\ntests[\"Response time is less than 1s\"] = responseTime < 1000;\n\nif (responseCode.code === 202) {\n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"A continue link is there\"] = jsonData.links[0].rel === \"Self\";\n    tests[\"leql statement is good\"] = jsonData.leql.statement === \"where(/.*/)\";\n    tests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"Today\";\n    \n    postman.setEnvironmentVariable(\"continue_link\", jsonData.links[0].href);\n}"
 							}
 						}
 					],
@@ -28,7 +28,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{read-only-key}}",
+								"value": "{{read_only_key}}",
 								"description": ""
 							},
 							{
@@ -57,7 +57,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;\ntests[\"Response time is less than 300ms\"] = responseTime < 300;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"A continue link is there\"] = jsonData.links[0].rel === \"Self\";\ntests[\"leql statement is good\"] = jsonData.leql.statement === \"calculate(count)\";\ntests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"yesterday\";\n\npostman.setEnvironmentVariable(\"continue_link\", jsonData.links[0].href);\n"
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;\ntests[\"Response time is less than 1s\"] = responseTime < 1000;\n\nif (responseCode.code === 202) {\n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"A continue link is there\"] = jsonData.links[0].rel === \"Self\";\n    tests[\"leql statement is good\"] = jsonData.leql.statement === \"calculate(count)\";\n    tests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"yesterday\";\n    \n    postman.setEnvironmentVariable(\"continue_link\", jsonData.links[0].href);\n}"
 							}
 						}
 					],
@@ -67,7 +67,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{read-only-key}}",
+								"value": "{{read_only_key}}",
 								"description": ""
 							},
 							{
@@ -96,7 +96,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;\ntests[\"Response time is less than 300ms\"] = responseTime < 300;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"A continue link is there\"] = jsonData.links[0].rel === \"Self\";\ntests[\"leql statement is good\"] = jsonData.leql.statement === \"calculate(average:service) timeslice(1h)\";\ntests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"today\";\n\npostman.setEnvironmentVariable(\"continue_link\", jsonData.links[0].href);\n"
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;\ntests[\"Response time is less than 300ms\"] = responseTime < 300;\n\nif (responseCode.code === 200) {\n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"A continue link is there\"] = jsonData.links[0].rel === \"Self\";\n    tests[\"leql statement is good\"] = jsonData.leql.statement === \"calculate(average:service) timeslice(1h)\";\n    tests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"today\";\n    \n    postman.setEnvironmentVariable(\"continue_link\", jsonData.links[0].href);\n}"
 							}
 						}
 					],
@@ -106,7 +106,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{read-only-key}}",
+								"value": "{{read_only_key}}",
 								"description": ""
 							},
 							{
@@ -135,7 +135,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;\ntests[\"Response time is less than 300ms\"] = responseTime < 300;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"A continue link is there\"] = jsonData.links[0].rel === \"Self\";\ntests[\"leql statement is good\"] = jsonData.leql.statement === \"calculate(standarddeviation:service) timeslice(1h)\";\ntests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"today\";\n\npostman.setEnvironmentVariable(\"continue_link\", jsonData.links[0].href);\n"
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;\ntests[\"Response time is less than 300ms\"] = responseTime < 300;\n\nif (responseCode.code === 200) {\n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"A continue link is there\"] = jsonData.links[0].rel === \"Self\";\n    tests[\"leql statement is good\"] = jsonData.leql.statement === \"calculate(standarddeviation:service) timeslice(1h)\";\n    tests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"today\";\n    \n    postman.setEnvironmentVariable(\"continue_link\", jsonData.links[0].href);\n}"
 							}
 						}
 					],
@@ -145,7 +145,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{read-only-key}}",
+								"value": "{{read_only_key}}",
 								"description": ""
 							},
 							{
@@ -180,7 +180,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"A not empty array of tags is returned\"] = jsonData.logs.length > 0;"
+								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nif (responseCode.code === 200) {\n    var jsonData = JSON.parse(responseBody);\n    tests[\"A not empty array of tags is returned\"] = jsonData.logs.length > 0;\n}"
 							}
 						}
 					],
@@ -190,7 +190,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{read-only-key}}",
+								"value": "{{read_only_key}}",
 								"description": ""
 							},
 							{
@@ -219,7 +219,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"log_id matches expected log id\"] = jsonData.log.id === environment.log_id;\ntests[\"log is called log1\"] = jsonData.log.name === \"Log1\";\ntests[\"there are no structures applied\"] = jsonData.log.structures.length === 0;\ntests[\"The log is in at least 1 log set\"] = jsonData.log.groups.length > 0;\n"
+								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nif (responseCode.code === 200) {\n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"log_id matches expected log id\"] = jsonData.log.id === environment.log_id;\n    tests[\"log is called log1\"] = jsonData.log.name === \"Log1\";\n    tests[\"there are no structures applied\"] = jsonData.log.structures.length === 0;\n    tests[\"The log is in at least 1 log set\"] = jsonData.log.groups.length > 0;\n}"
 							}
 						}
 					],
@@ -229,7 +229,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{read-only-key}}",
+								"value": "{{read_only_key}}",
 								"description": ""
 							},
 							{
@@ -258,7 +258,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"log has correct name\"] = jsonData.log.name === \"Postman New Log\";\ntests[\"there are no structures applied\"] = jsonData.log.structures.length === 0;\ntests[\"The log is in no log sets\"] = jsonData.log.groups.length === 0;\ntests[\"I get a log token for the new log\"] = jsonData.log.tokens.length > 0;\n\npostman.setEnvironmentVariable(\"new_log_id\", jsonData.log.id);\n"
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nif (responseCode.code === 201) {\n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"log has correct name\"] = jsonData.log.name === \"Postman New Log\";\n    tests[\"there are no structures applied\"] = jsonData.log.structures.length === 0;\n    tests[\"The log is in no log sets\"] = jsonData.log.groups.length === 0;\n    tests[\"I get a log token for the new log\"] = jsonData.log.tokens.length > 0;\n    \n    postman.setEnvironmentVariable(\"new_log_id\", jsonData.log.id);\n}"
 							}
 						}
 					],
@@ -268,7 +268,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{read-write-key}}",
+								"value": "{{read_write_key}}",
 								"description": ""
 							},
 							{
@@ -297,7 +297,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"log is renamed\"] = jsonData.log.name === \"Postman changed name\";\n\npostman.setEnvironmentVariable(\"new_log_id\", jsonData.log.id);\n"
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nif (responseCode.code === 201) {\n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"log is renamed\"] = jsonData.log.name === \"Postman changed name\";\n}"
 							}
 						}
 					],
@@ -307,7 +307,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{read-write-key}}",
+								"value": "{{read_write_key}}",
 								"description": ""
 							},
 							{
@@ -346,7 +346,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{read-write-key}}",
+								"value": "{{read_write_key}}",
 								"description": ""
 							},
 							{
@@ -381,7 +381,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;\ntests[\"Response time is less than 300ms\"] = responseTime < 300;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"A continue link is there\"] = jsonData.links[0].rel === \"Self\";\ntests[\"leql statement is good\"] = jsonData.leql.statement === \"where(/.*/)\";\ntests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"Today\";\n\npostman.setEnvironmentVariable(\"continue_link\", jsonData.links[0].href);"
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;\ntests[\"Response time is less than 300ms\"] = responseTime < 300;\n\nif (responseCode.code === 202) {\n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"A continue link is there\"] = jsonData.links[0].rel === \"Self\";\n    tests[\"leql statement is good\"] = jsonData.leql.statement === \"where(/.*/)\";\n    tests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"Today\";\n    \n    postman.setEnvironmentVariable(\"continue_link\", jsonData.links[0].href);\n}"
 							}
 						}
 					],
@@ -391,7 +391,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{read-only-key}}",
+								"value": "{{read_only_key}}",
 								"description": ""
 							},
 							{
@@ -420,7 +420,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "postman.clearEnvironmentVariable(\"continue_link\");\n\ntests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 300ms\"] = responseTime < 300;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"leql statement is good\"] = jsonData.leql.statement === \"where(/.*/)\";\ntests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"Today\";\n\n\ntests[\"assert we checked the correct log\"] = jsonData.logs[0] === environment.log_id;\ntests[\"assert we get some events back\"] = jsonData.events.length > 0;"
+								"exec": "postman.clearEnvironmentVariable(\"continue_link\");\n\ntests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 300ms\"] = responseTime < 300;\n\nif (responseCode.code === 200) {\n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"leql statement is good\"] = jsonData.leql.statement === \"where(/.*/)\";\n    tests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"Today\";\n    \n    \n    tests[\"assert we checked the correct log\"] = jsonData.logs[0] === environment.log_id;\n    tests[\"assert we get some events back\"] = jsonData.events.length > 0;\n}"
 							}
 						}
 					],
@@ -460,7 +460,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 202\"] = responseCode.code === 200;\ntests[\"Response time is less than 2s\"] = responseTime < 2000;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"A not empty array of tags is returned\"] = jsonData.tags.length > 0;\n"
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 200;\ntests[\"Response time is less than 2s\"] = responseTime < 2000;\n\nif (responseCode.code === 200) {\n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"A not empty array of tags is returned\"] = jsonData.tags.length > 0;\n}"
 							}
 						}
 					],
@@ -470,7 +470,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{read-only-key}}",
+								"value": "{{read_only_key}}",
 								"description": ""
 							},
 							{
@@ -499,7 +499,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\ntests[\"Response time is less than 2s\"] = responseTime < 2000;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"Type is alert\"] = jsonData.tag.type === \"Alert\";\ntests[\"Name is correct\"] = jsonData.tag.name === \"Postman Test Tag\";\ntests[\"Source is correct\"] = jsonData.tag.sources[0].id === environment.log_id;\ntests[\"Pattern is correct\"] = jsonData.tag.patterns[0] === \"/postman_testing_tag/\";\n\npostman.setEnvironmentVariable(\"new_tag_id\", jsonData.tag.id);"
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\ntests[\"Response time is less than 2s\"] = responseTime < 2000;\n\nif (responseCode.code === 201) {\n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"Type is alert\"] = jsonData.tag.type === \"Alert\";\n    tests[\"Name is correct\"] = jsonData.tag.name === \"Postman Test Tag\";\n    tests[\"Source is correct\"] = jsonData.tag.sources[0].id === environment.log_id;\n    tests[\"Pattern is correct\"] = jsonData.tag.patterns[0] === \"/postman_testing_tag/\";\n    \n    postman.setEnvironmentVariable(\"new_tag_id\", jsonData.tag.id);\n}"
 							}
 						}
 					],
@@ -509,7 +509,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{read-write-key}}",
+								"value": "{{read_write_key}}",
 								"description": ""
 							},
 							{
@@ -525,20 +525,20 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"tag\": {\n    \"actions\": [],\n    \"labels\": [\n\t    {\n\t      \"id\": \"1eb0ecb1-42be-4af3-8ad8-d0268ac9a3ea\",\n\t      \"sn\": 1488,\n\t      \"name\": \"Network Error\",\n\t      \"color\": \"fc0020\",\n\t      \"reserved\": false\n\t    }\n    ],\n    \"name\": \"Postman Test Tag\",\n    \"patterns\": [\n      \"/postman_testing_tag/\"\n    ],\n    \"sources\": [\n      {\n        \"id\": \"{{log_id}}\"\n      }\n    ],\n    \"type\": \"Alert\"\n  }\n}"
+							"raw": "{\n  \"tag\": {\n    \"actions\": [],\n    \"labels\": [\n\t    {\n\t      \"id\": \"474687b6-5ee4-48da-abfb-92c4c93e3ba5\",\n          \"sn\": 1010,\n          \"name\": \"CPU max usage\",\n          \"color\": \"ff003f\",\n          \"reserved\": false\n\t    }\n    ],\n    \"name\": \"Postman Test Tag\",\n    \"patterns\": [\n      \"/postman_testing_tag/\"\n    ],\n    \"sources\": [\n      {\n        \"id\": \"{{log_id}}\"\n      }\n    ],\n    \"type\": \"Alert\"\n  }\n}"
 						},
 						"description": "Get a list of all Tags for a given account"
 					},
 					"response": []
 				},
 				{
-					"name": "Update Tag to have 2nd pattern",
+					"name": "Rename Tag",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 2s\"] = responseTime < 2000;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"Name is correct\"] = jsonData.tag.name === \"Postman new name\";"
+								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 2s\"] = responseTime < 2000;\n\nif (responseCode.code === 200) {\n    var jsonData = JSON.parse(responseBody);\n    tests[\"Name is correct\"] = jsonData.tag.name === \"Postman new name\";\n}"
 							}
 						}
 					],
@@ -548,7 +548,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{read-write-key}}",
+								"value": "{{read_write_key}}",
 								"description": ""
 							},
 							{
@@ -577,7 +577,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 201\"] = responseCode.code === 200;\ntests[\"Response time is less than 2s\"] = responseTime < 2000;\n"
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 200;\ntests[\"Response time is less than 2s\"] = responseTime < 2000;\n\nif (responseCode.code === 200) {\n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"Type is alert\"] = jsonData.tag.type === \"Alert\";\n    tests[\"Name is correct\"] = jsonData.tag.name === \"Postman Test Tag\";\n    tests[\"Source is correct\"] = jsonData.tag.sources[0].id === environment.log_id;\n    tests[\"Pattern is correct\"] = jsonData.tag.patterns[0] === \"/postman_testing_tag/\";\n    \n    postman.setEnvironmentVariable(\"new_tag_id\", jsonData.tag.id);\n}"
 							}
 						}
 					],
@@ -587,7 +587,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{read-write-key}}",
+								"value": "{{read_write_key}}",
 								"description": ""
 							},
 							{
@@ -626,7 +626,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{read-write-key}}",
+								"value": "{{read_write_key}}",
 								"description": ""
 							},
 							{
@@ -665,7 +665,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{read-write-key}}",
+								"value": "{{read_write_key}}",
 								"description": ""
 							},
 							{
@@ -704,7 +704,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{read-write-key}}",
+								"value": "{{read_write_key}}",
 								"description": ""
 							},
 							{
@@ -739,7 +739,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"account_id matches expected account id\"] = jsonData.account.id === environment.account_id;\ntests[\"retention period is 7 days\"] = jsonData.account.retention_period === 7*24*60*60*1000;\ntests[\"owner api key is correct\"] = jsonData.account.owner_api_key_id === environment.owner_api_key_id;\ntests[\"read write key is correct\"] = jsonData.account.rw_api_key === environment.read_write_key;\ntests[\"read only key is correct\"] = jsonData.account.ro_api_key === environment.read_only_key;"
+								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nif (responseCode.code === 200) {\n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"account_id matches expected account id\"] = jsonData.account.id === environment.account_id;\n    tests[\"retention period is 7 days\"] = jsonData.account.retention_period === 7*24*60*60*1000;\n    tests[\"owner api key is correct\"] = jsonData.account.owner_api_key_id === environment.owner_api_key_id;\n    tests[\"read write key is correct\"] = jsonData.account.rw_api_key === environment.read_write_key;\n    tests[\"read only key is correct\"] = jsonData.account.ro_api_key === environment.read_only_key;\n}"
 							}
 						},
 						{
@@ -785,7 +785,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"users are listed\"] = jsonData.users.length > 0;\ntests[\"A user id is listed\"] = jsonData.users[0].id.length > 0;\n\npostman.setEnvironmentVariable(\"sample_user_id\", jsonData.users[0].id);\n"
+								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nif (responseCode.code === 200) {\n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"users are listed\"] = jsonData.users.length > 0;\n    tests[\"A user id is listed\"] = jsonData.users[0].id.length > 0;\n    \n    postman.setEnvironmentVariable(\"sample_user_id\", jsonData.users[0].id);\n}"
 							}
 						},
 						{
@@ -831,7 +831,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"user id is correct\"] = jsonData.user.id === environment.sample_user_id;\n\ntests[\"last login was this week\"] = new Date().getTime()/1000 - jsonData.user.last_login < 604800000;"
+								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nif (responseCode.code === 200) {\n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"user id is correct\"] = jsonData.user.id === environment.sample_user_id;\n    tests[\"last login was this week\"] = new Date().getTime()/1000 - jsonData.user.last_login < 604800000;\n}"
 							}
 						},
 						{
@@ -879,26 +879,26 @@
 					"listen": "test",
 					"script": {
 						"type": "text/javascript",
-						"exec": "tests[\"Status code is 202\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"Query limit is 1000\"] = jsonData.endpoints.query.limit === 1000;\ntests[\"Query Remaining is over 900 \"] = jsonData.endpoints.query.remaining > 900;"
+						"exec": "tests[\"Status code is 202\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nif (responseCode.code === 200) {\n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"Query limit is 1000\"] = jsonData.endpoints.query.limit === 1000;\n    tests[\"Query Remaining is over 900 \"] = jsonData.endpoints.query.remaining > 900;\n}"
 					}
 				}
 			],
 			"request": {
-				"url": "{{url}}/rate_limit/endpoints/{{read-only-key}}",
+				"url": "{{url}}rate_limit/endpoints/{{read_only_key}}",
 				"method": "GET",
 				"header": [
 					{
 						"key": "x-api-key",
-						"value": "{{read-only-key}}",
-						"description": ""
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
+						"value": "{{read_only_key}}",
 						"description": ""
 					},
 					{
 						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
 						"value": "application/json",
 						"description": ""
 					}
