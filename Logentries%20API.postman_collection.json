@@ -35,6 +35,11 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"description": ""
+							},
+							{
+								"key": "Acce",
+								"value": "application/json",
+								"description": ""
 							}
 						],
 						"body": {
@@ -67,6 +72,11 @@
 							},
 							{
 								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
 								"value": "application/json",
 								"description": ""
 							}
@@ -103,6 +113,11 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
 							}
 						],
 						"body": {
@@ -135,6 +150,11 @@
 							},
 							{
 								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
 								"value": "application/json",
 								"description": ""
 							}
@@ -172,6 +192,16 @@
 								"key": "x-api-key",
 								"value": "{{read-only-key}}",
 								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
 							}
 						],
 						"body": {
@@ -200,6 +230,16 @@
 							{
 								"key": "x-api-key",
 								"value": "{{read-only-key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
 								"description": ""
 							}
 						],
@@ -233,6 +273,11 @@
 							},
 							{
 								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
 								"value": "application/json",
 								"description": ""
 							}
@@ -269,6 +314,11 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
 							}
 						],
 						"body": {
@@ -301,6 +351,11 @@
 							},
 							{
 								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
 								"value": "application/json",
 								"description": ""
 							}
@@ -343,6 +398,11 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
 							}
 						],
 						"body": {
@@ -367,7 +427,18 @@
 					"request": {
 						"url": "{{continue_link}}",
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
 						"body": {
 							"mode": "formdata",
 							"formdata": []
@@ -401,6 +472,16 @@
 								"key": "x-api-key",
 								"value": "{{read-only-key}}",
 								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
 							}
 						],
 						"body": {
@@ -418,7 +499,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\ntests[\"Response time is less than 2s\"] = responseTime < 2000;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"Type is alert\"] = jsonData.tag.type === \"Alert\";\ntests[\"Name is correct\"] = jsonData.tag.name === \"Postman Test Tag\";\ntests[\"Source is correct\"] = jsonData.tag.sources[0].id === environment.log_id;\ntests[\"Pattern is correct\"] = jsonData.tag.patterns[0] === \"/postman_testing_tag/\";\n\npostman.setEnvironmentVariable(\"new_tag_id\", jsonData.tag.id);\n"
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\ntests[\"Response time is less than 2s\"] = responseTime < 2000;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"Type is alert\"] = jsonData.tag.type === \"Alert\";\ntests[\"Name is correct\"] = jsonData.tag.name === \"Postman Test Tag\";\ntests[\"Source is correct\"] = jsonData.tag.sources[0].id === environment.log_id;\ntests[\"Pattern is correct\"] = jsonData.tag.patterns[0] === \"/postman_testing_tag/\";\n\npostman.setEnvironmentVariable(\"new_tag_id\", jsonData.tag.id);"
 							}
 						}
 					],
@@ -433,6 +514,11 @@
 							},
 							{
 								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
 								"value": "application/json",
 								"description": ""
 							}
@@ -469,6 +555,11 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
 							}
 						],
 						"body": {
@@ -503,6 +594,11 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
 							}
 						],
 						"body": {
@@ -531,6 +627,16 @@
 							{
 								"key": "x-api-key",
 								"value": "{{read-write-key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
 								"description": ""
 							}
 						],
@@ -561,6 +667,16 @@
 								"key": "x-api-key",
 								"value": "{{read-write-key}}",
 								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
 							}
 						],
 						"body": {
@@ -590,6 +706,160 @@
 								"key": "x-api-key",
 								"value": "{{read-write-key}}",
 								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Management",
+			"description": "",
+			"item": [
+				{
+					"name": "Get Account Information",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"account_id matches expected account id\"] = jsonData.account.id === environment.account_id;\ntests[\"retention period is 7 days\"] = jsonData.account.retention_period === 7*24*60*60*1000;\ntests[\"owner api key is correct\"] = jsonData.account.owner_api_key_id === environment.owner_api_key_id;\ntests[\"read write key is correct\"] = jsonData.account.rw_api_key === environment.read_write_key;\ntests[\"read only key is correct\"] = jsonData.account.ro_api_key === environment.read_only_key;"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "var time = new Date().toUTCString();\n\n// Build the request body string from the Postman request.data object\nvar requestBody = \"\";\nvar requestBody = \"\";\n    var firstpass = true;\n    for(var param in request.data)\n    {\n        if(!firstpass){\n            requestBody += \"&\";\n        }\n        requestBody += param + \"=\" + request.data[param];\n        firstpass = false;\n    }\n\nvar b64BodyContent = CryptoJS.SHA256(requestBody).toString(CryptoJS.enc.Base64);\nvar uri = request.url.split(\"{{url}}\")[1];\nuri = uri.replace(/{{(\\w+)}}/g, function me(match, capture) {return environment[capture];});\n\nvar rawSignature = request.method + \"application/json\" + time + uri + b64BodyContent;\n\nvar hmac = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(rawSignature, environment.owner_api_key));\nvar signature = environment.owner_api_key_id.concat(\":\").concat(hmac);\n\npostman.setEnvironmentVariable('rawSignature', rawSignature);\npostman.setEnvironmentVariable('time', time);\npostman.setEnvironmentVariable('signature', signature);"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}management/accounts/{{account_id}}",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Date",
+								"value": "{{time}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "authorization-api-key",
+								"value": "{{signature}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"users are listed\"] = jsonData.users.length > 0;\ntests[\"A user id is listed\"] = jsonData.users[0].id.length > 0;\n\npostman.setEnvironmentVariable(\"sample_user_id\", jsonData.users[0].id);\n"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "var time = new Date().toUTCString();\n\n// Build the request body string from the Postman request.data object\nvar requestBody = \"\";\nvar requestBody = \"\";\n    var firstpass = true;\n    for(var param in request.data)\n    {\n        if(!firstpass){\n            requestBody += \"&\";\n        }\n        requestBody += param + \"=\" + request.data[param];\n        firstpass = false;\n    }\n\nvar b64BodyContent = CryptoJS.SHA256(requestBody).toString(CryptoJS.enc.Base64);\nvar uri = request.url.split(\"{{url}}\")[1];\nuri = uri.replace(/{{(\\w+)}}/g, function me(match, capture) {return environment[capture];});\n\nvar rawSignature = request.method + \"application/json\" + time + uri + b64BodyContent;\n\nvar hmac = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(rawSignature, environment.owner_api_key));\nvar signature = environment.owner_api_key_id.concat(\":\").concat(hmac);\n\npostman.setEnvironmentVariable('rawSignature', rawSignature);\npostman.setEnvironmentVariable('time', time);\npostman.setEnvironmentVariable('signature', signature);"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}management/accounts/{{account_id}}/users",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Date",
+								"value": "{{time}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "authorization-api-key",
+								"value": "{{signature}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specific User Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Response time is less than 500ms\"] = responseTime < 500;\n\nvar jsonData = JSON.parse(responseBody);\n\ntests[\"user id is correct\"] = jsonData.user.id === environment.sample_user_id;\n\ntests[\"last login was this week\"] = new Date().getTime()/1000 - jsonData.user.last_login < 604800000;"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "var time = new Date().toUTCString();\n\n// Build the request body string from the Postman request.data object\nvar requestBody = \"\";\nvar requestBody = \"\";\n    var firstpass = true;\n    for(var param in request.data)\n    {\n        if(!firstpass){\n            requestBody += \"&\";\n        }\n        requestBody += param + \"=\" + request.data[param];\n        firstpass = false;\n    }\n\nvar b64BodyContent = CryptoJS.SHA256(requestBody).toString(CryptoJS.enc.Base64);\nvar uri = request.url.split(\"{{url}}\")[1];\nuri = uri.replace(/{{(\\w+)}}/g, function me(match, capture) {return environment[capture];});\n\nvar rawSignature = request.method + \"application/json\" + time + uri + b64BodyContent;\n\nvar hmac = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(rawSignature, environment.owner_api_key));\nvar signature = environment.owner_api_key_id.concat(\":\").concat(hmac);\n\npostman.setEnvironmentVariable('rawSignature', rawSignature);\npostman.setEnvironmentVariable('time', time);\npostman.setEnvironmentVariable('signature', signature);"
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}management/accounts/{{account_id}}/users/{{sample_user_id}}",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Date",
+								"value": "{{time}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "authorization-api-key",
+								"value": "{{signature}}",
+								"description": ""
 							}
 						],
 						"body": {
@@ -618,13 +888,18 @@
 				"method": "GET",
 				"header": [
 					{
+						"key": "x-api-key",
+						"value": "{{read-only-key}}",
+						"description": ""
+					},
+					{
 						"key": "Content-Type",
 						"value": "application/json",
 						"description": ""
 					},
 					{
-						"key": "x-api-key",
-						"value": "{{read-only-key}}",
+						"key": "Accept",
+						"value": "application/json",
 						"description": ""
 					}
 				],
