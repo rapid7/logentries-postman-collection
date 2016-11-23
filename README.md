@@ -9,9 +9,10 @@ Try out the Logentries REST API using Postman with this ready-made Postman colle
 Just click on the link above to get started, after importing the collection into Postman, you'll need to fill in some environment variables.
 
 1. Click on the cog in the top right corner of your Postman window
-2. Click on "Logentries example environment"
-3. Go to the Logentries API key page in your browser: https://logentries.com/app/#/user-account/apikey
-4. Fill out the values for each key in Postman.
+2. Click on "Manage Environments"
+3. Click on "Logentries example environment"
+4. Go to the Logentries API key page in your browser: https://logentries.com/app/#/user-account/apikey
+5. Fill out the values for each key in Postman.
 
 # Manual installation
 
