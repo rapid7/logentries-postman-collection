@@ -574,7 +574,7 @@
 			"description": "",
 			"item": [
 				{
-					"name": "Get all Logs",
+					"name": "Get all logs ",
 					"event": [
 						{
 							"listen": "test",
@@ -590,46 +590,17 @@
 									"}"
 								]
 							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"var time = new Date().toUTCString();",
-									"",
-									"// Build the request body string from the Postman request.data object",
-									"var requestBody = \"\";",
-									"var firstpass = true;",
-									"for(var param in request.data)",
-									"    {",
-									"        if(!firstpass){",
-									"            requestBody += \"&\";",
-									"        }",
-									"        requestBody += param + \"=\" + request.data[param];",
-									"        firstpass = false;",
-									"    }",
-									"",
-									"var b64BodyContent = CryptoJS.SHA256(requestBody).toString(CryptoJS.enc.Base64);",
-									"var uri = request.url.split(\"{{url}}\")[1];",
-									"uri = uri.replace(/{{(\\w+)}}/g, function me(match, capture) {return environment[capture];});",
-									"",
-									"var rawSignature = request.method.toUpperCase() + \"application/json\" + time + uri + b64BodyContent;",
-									"",
-									"var hmac = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(rawSignature, environment.owner_api_key));",
-									"var signature = environment.owner_api_key_id.concat(\":\").concat(hmac);",
-									"",
-									"postman.setEnvironmentVariable('rawSignature', rawSignature);",
-									"postman.setEnvironmentVariable('time', time);",
-									"postman.setEnvironmentVariable('signature', signature);"
-								]
-							}
 						}
 					],
 					"request": {
-						"url": "{{url}}management/logs",
+						"url": "{{url}}/management/logs",
 						"method": "GET",
 						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read_only_key}}",
+								"description": ""
+							},
 							{
 								"key": "Content-Type",
 								"value": "application/json",
@@ -639,23 +610,13 @@
 								"key": "Accept",
 								"value": "application/json",
 								"description": ""
-							},
-							{
-								"key": "authorization-api-key",
-								"value": "{{signature}}",
-								"description": ""
-							},
-							{
-								"key": "Date",
-								"value": "{{time}}",
-								"description": ""
 							}
 						],
 						"body": {
 							"mode": "formdata",
 							"formdata": []
 						},
-						"description": "Get a list of all Logs for a given account"
+						"description": ""
 					},
 					"response": []
 				},
@@ -726,7 +687,7 @@
 									"    ",
 									"    tests[\"log has correct name\"] = jsonData.log.name === \"Postman New Log\";",
 									"    tests[\"there are no structures applied\"] = jsonData.log.structures.length === 0;",
-									"    tests[\"The log is in no log sets\"] = jsonData.log.groups.length === 0;",
+									"    tests[\"The log is in no log sets\"] = jsonData.log.logsets_info.length === 0;",
 									"    tests[\"I get a log token for the new log\"] = jsonData.log.tokens.length > 0;",
 									"    ",
 									"    postman.setEnvironmentVariable(\"new_log_id\", jsonData.log.id);",
@@ -757,7 +718,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"log\": {\n    \"name\": \"Postman New Log\"\n  }\n}"
+							"raw": "{\n  \"log\": {\n    \"name\": \"Postman New Log\",\n    \"logsets_info\" : []\n  }\n}"
 						},
 						"description": ""
 					},
