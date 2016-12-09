@@ -1,15 +1,15 @@
 {
 	"variables": [],
 	"info": {
-		"name": "Logentries API",
-		"_postman_id": "f62a2562-7eba-bd65-aa75-e5dfa796d747",
+		"name": "Logentries Demo API",
+		"_postman_id": "a64025ca-0853-6b9b-9341-63d7e61ea771",
 		"description": "The Logentries REST API provides a powerful way for your users and systems to programmatically manipulate the Logentries platform without accessing the user interface.\n\nThe documentation for the endpoints as well as example responses can be found at [https://docs.logentries.com/docs/rest-api](https://docs.logentries.com/docs/rest-api?source=postman)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Example: Adding a new email address to an alert",
-			"description": "This example will show you how to add a new email address to an existing email alert.",
+			"name": "Adding a new email address to an alert",
+			"description": "",
 			"item": [
 				{
 					"name": "Get all Tags",
@@ -139,10 +139,10 @@
 									"var existing_emails = environment.direct_emails;",
 									"var result = \"\";",
 									"if (existing_emails === \"\"){",
-									"    result = \"new_example@fakeemail.com\";",
+									"    result = \"support@logentries.com\";",
 									"}",
 									"else {",
-									"    result = existing_emails + \",new_example@fakeemail.com\";",
+									"    result = existing_emails + \",support@logentries.com\";",
 									"}",
 									"postman.setEnvironmentVariable('new_emails_for_action', result);"
 								]
@@ -248,7 +248,7 @@
 			]
 		},
 		{
-			"name": "Other Sample Queries",
+			"name": "Example Queries",
 			"description": "You'll need to click on the continue link for these queries if they don't complete in the original query",
 			"item": [
 				{
@@ -462,8 +462,8 @@
 			]
 		},
 		{
-			"name": "Example: Query with continue set up already",
-			"description": "This example query will, in the 1st request, attempt to get all logs in a log, and then a continue will be run.",
+			"name": "Example Query with continue set up already",
+			"description": "",
 			"item": [
 				{
 					"name": "Query log for events",
@@ -564,6 +564,342 @@
 							"formdata": []
 						},
 						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Log Management",
+			"description": "",
+			"item": [
+				{
+					"name": "Get all Logs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Response time is less than 500ms\"] = responseTime < 2000;",
+									"",
+									"if (responseCode.code === 200) {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    tests[\"A not empty array of logs is returned\"] = jsonData.logs.length > 0;",
+									"}"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var time = new Date().toUTCString();",
+									"",
+									"// Build the request body string from the Postman request.data object",
+									"var requestBody = \"\";",
+									"var firstpass = true;",
+									"for(var param in request.data)",
+									"    {",
+									"        if(!firstpass){",
+									"            requestBody += \"&\";",
+									"        }",
+									"        requestBody += param + \"=\" + request.data[param];",
+									"        firstpass = false;",
+									"    }",
+									"",
+									"var b64BodyContent = CryptoJS.SHA256(requestBody).toString(CryptoJS.enc.Base64);",
+									"var uri = request.url.split(\"{{url}}\")[1];",
+									"uri = uri.replace(/{{(\\w+)}}/g, function me(match, capture) {return environment[capture];});",
+									"",
+									"var rawSignature = request.method.toUpperCase() + \"application/json\" + time + uri + b64BodyContent;",
+									"",
+									"var hmac = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(rawSignature, environment.owner_api_key));",
+									"var signature = environment.owner_api_key_id.concat(\":\").concat(hmac);",
+									"",
+									"postman.setEnvironmentVariable('rawSignature', rawSignature);",
+									"postman.setEnvironmentVariable('time', time);",
+									"postman.setEnvironmentVariable('signature', signature);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}management/logs",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "authorization-api-key",
+								"value": "{{signature}}",
+								"description": ""
+							},
+							{
+								"key": "Date",
+								"value": "{{time}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Get a list of all Logs for a given account"
+					},
+					"response": []
+				},
+				{
+					"name": "Get specific log details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Response time is less than 500ms\"] = responseTime < 2000;",
+									"",
+									"if (responseCode.code === 200) {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    ",
+									"    tests[\"log_id matches expected log id\"] = jsonData.log.id === environment.log_id;",
+									"    tests[\"log is called log1\"] = jsonData.log.name === \"Fastly testing endpoint\";",
+									"    tests[\"there are no structures applied\"] = jsonData.log.structures.length === 0;",
+									"    tests[\"The log is in at least 1 log set\"] = jsonData.log.logsets_info.length > 0;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/management/logs/{{log_id}}",
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read_only_key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Make a new log",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"tests[\"Response time is less than 500ms\"] = responseTime < 2000;",
+									"",
+									"if (responseCode.code === 201) {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    ",
+									"    tests[\"log has correct name\"] = jsonData.log.name === \"Postman New Log\";",
+									"    tests[\"there are no structures applied\"] = jsonData.log.structures.length === 0;",
+									"    tests[\"The log is in no log sets\"] = jsonData.log.groups.length === 0;",
+									"    tests[\"I get a log token for the new log\"] = jsonData.log.tokens.length > 0;",
+									"    ",
+									"    postman.setEnvironmentVariable(\"new_log_id\", jsonData.log.id);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/management/logs/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read_write_key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"log\": {\n    \"name\": \"Postman New Log\"\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Edit new log name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"tests[\"Response time is less than 500ms\"] = responseTime < 2000;",
+									"",
+									"if (responseCode.code === 201) {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    ",
+									"    tests[\"log is renamed\"] = jsonData.log.name === \"Postman changed name\";",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/management/logs/{{new_log_id}}",
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read_write_key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"log\": {\n    \"name\": \"Postman changed name\"\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete newly created log",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 204\"] = responseCode.code === 204;",
+									"tests[\"Response time is less than 1s\"] = responseTime < 2000;",
+									"",
+									"postman.clearEnvironmentVariable(\"new_log_id\");",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/management/logs/{{new_log_id}}",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read_write_key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Logsets",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Response time is less than 500ms\"] = responseTime < 2000;",
+									"",
+									"if (responseCode.code === 200) {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    tests[\"A not empty array of tags is returned\"] = jsonData.logsets.length > 0;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}management/logsets",
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read_only_key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Get a list of all Logsets for a given account"
 					},
 					"response": []
 				}
@@ -1076,7 +1412,7 @@
 								"exec": [
 									"tests[\"Status code is 200\"] = responseCode.code === 200;",
 									"tests[\"Response time is less than 500ms\"] = responseTime < 500;",
-									"",
+									"test[enviornment.signature] == \"\"",
 									"if (responseCode.code === 200) {",
 									"    var jsonData = JSON.parse(responseBody);",
 									"    ",
@@ -1098,9 +1434,8 @@
 									"",
 									"// Build the request body string from the Postman request.data object",
 									"var requestBody = \"\";",
-									"var requestBody = \"\";",
-									"    var firstpass = true;",
-									"    for(var param in request.data)",
+									"var firstpass = true;",
+									"for(var param in request.data)",
 									"    {",
 									"        if(!firstpass){",
 									"            requestBody += \"&\";",
@@ -1130,9 +1465,10 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "Date",
+								"key": "//Date",
 								"value": "{{time}}",
-								"description": ""
+								"description": "",
+								"disabled": true
 							},
 							{
 								"key": "Content-Type",
@@ -1184,9 +1520,8 @@
 									"",
 									"// Build the request body string from the Postman request.data object",
 									"var requestBody = \"\";",
-									"var requestBody = \"\";",
-									"    var firstpass = true;",
-									"    for(var param in request.data)",
+									"var firstpass = true;",
+									"for(var param in request.data)",
 									"    {",
 									"        if(!firstpass){",
 									"            requestBody += \"&\";",
@@ -1268,9 +1603,8 @@
 									"",
 									"// Build the request body string from the Postman request.data object",
 									"var requestBody = \"\";",
-									"var requestBody = \"\";",
-									"    var firstpass = true;",
-									"    for(var param in request.data)",
+									"var firstpass = true;",
+									"for(var param in request.data)",
 									"    {",
 									"        if(!firstpass){",
 									"            requestBody += \"&\";",
