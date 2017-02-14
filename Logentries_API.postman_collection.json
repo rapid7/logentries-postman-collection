@@ -559,10 +559,7 @@
 								"description": ""
 							}
 						],
-						"body": {
-							"mode": "formdata",
-							"formdata": []
-						},
+						"body": {},
 						"description": ""
 					},
 					"response": []
@@ -612,10 +609,7 @@
 								"description": ""
 							}
 						],
-						"body": {
-							"mode": "formdata",
-							"formdata": []
-						},
+						"body": {},
 						"description": ""
 					},
 					"response": []
@@ -663,10 +657,7 @@
 								"description": ""
 							}
 						],
-						"body": {
-							"mode": "formdata",
-							"formdata": []
-						},
+						"body": {},
 						"description": ""
 					},
 					"response": []
@@ -856,10 +847,7 @@
 								"description": ""
 							}
 						],
-						"body": {
-							"mode": "formdata",
-							"formdata": []
-						},
+						"body": {},
 						"description": "Get a list of all Logsets for a given account"
 					},
 					"response": []
@@ -871,6 +859,54 @@
 			"description": "",
 			"item": [
 				{
+					"name": "Get all saved queries",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is correct\"] = responseCode.code === 200;",
+									"tests[\"Response time is less than 1s\"] = responseTime < 1000;",
+									"",
+									"if (tests[\"Status code is correct\"]) {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    ",
+									"    tests[\"An id is returned\"] = jsonData.saved_queries.length > 0;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}query/saved_queries",
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read_write_key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
 					"name": "Get bytes count for yesterday",
 					"event": [
 						{
@@ -878,15 +914,15 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"tests[\"Status code is 202\"] = responseCode.code === 202;",
+									"tests[\"Status code is correct\"] = responseCode.code === 202;",
 									"tests[\"Response time is less than 1s\"] = responseTime < 1000;",
 									"",
-									"if (responseCode.code === 202) {",
+									"if (tests[\"Status code is correct\"]) {",
 									"    var jsonData = JSON.parse(responseBody);",
 									"    ",
 									"    tests[\"A continue link is there\"] = jsonData.links[0].rel === \"Self\";",
-									"    tests[\"leql statement is good\"] = jsonData.leql.statement === \"where(/.*/)\";",
-									"    tests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"Today\";",
+									"    tests[\"leql statement is good\"] = jsonData.leql.statement === \"calculate(bytes) timeslice(1h)\";",
+									"    tests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"Yesterday\";",
 									"    ",
 									"    postman.setEnvironmentVariable(\"continue_link\", jsonData.links[0].href);",
 									"}"
@@ -930,10 +966,10 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"tests[\"Status code is correct\"] = responseCode.code === 201;",
 									"tests[\"Response time is less than 1s\"] = responseTime < 1000;",
 									"",
-									"if (responseCode.code === 201) {",
+									"if (tests[\"Status code is correct\"]) {",
 									"    var jsonData = JSON.parse(responseBody);",
 									"    ",
 									"    tests[\"An id is returned\"] = jsonData.saved_query.id.length === 36;",
@@ -979,13 +1015,17 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"tests[\"Status code is 202\"] = responseCode.code === 202;",
+									"tests[\"Status code is correct\"] = responseCode.code === 202;",
 									"tests[\"Response time is less than 1s\"] = responseTime < 1000;",
 									"",
-									"if (responseCode.code === 202) {",
+									"if (tests[\"Status code is correct\"]) {",
 									"    var jsonData = JSON.parse(responseBody);",
 									"    ",
 									"    tests[\"A continue link is there\"] = jsonData.links[0].rel === \"Self\";",
+									"    tests[\"leql statement is good\"] = jsonData.leql.statement === \"calculate(bytes) timeslice(1h)\";",
+									"    tests[\"leql time range is good\"] = jsonData.leql.during.time_range === \"Yesterday\";",
+									"    ",
+									"    postman.setEnvironmentVariable(\"continue_link\", jsonData.links[0].href);",
 									"}"
 								]
 							}
@@ -1261,10 +1301,7 @@
 								"description": ""
 							}
 						],
-						"body": {
-							"mode": "formdata",
-							"formdata": []
-						},
+						"body": {},
 						"description": ""
 					},
 					"response": []
@@ -1349,9 +1386,132 @@
 								"description": ""
 							}
 						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usage API",
+			"description": "",
+			"item": [
+				{
+					"name": "Usage for account for the last 7 days",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"postman.clearEnvironmentVariable(\"from_temp\");",
+									"postman.clearEnvironmentVariable(\"to_temp\");",
+									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var date = new Date();",
+									"date.setDate(date.getDate() - 7);",
+									"var from = date.toISOString().split(\"T\")[0];",
+									"",
+									"var to = new Date().toISOString().split(\"T\")[0];",
+									"",
+									"postman.setEnvironmentVariable('from_temp', from);",
+									"postman.setEnvironmentVariable('to_temp', to);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/usage/accounts/{{account_resource_id}}?from={{from_temp}}&to={{to_temp}}",
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read_write_key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
 						"body": {
-							"mode": "formdata",
-							"formdata": []
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Usage for log for the last 7 days",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"postman.clearEnvironmentVariable(\"from_temp\");",
+									"postman.clearEnvironmentVariable(\"to_temp\");",
+									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var date = new Date();",
+									"date.setDate(date.getDate() - 7);",
+									"var from = date.toISOString().split(\"T\")[0];",
+									"",
+									"var to = new Date().toISOString().split(\"T\")[0];",
+									"",
+									"postman.setEnvironmentVariable('from_temp', from);",
+									"postman.setEnvironmentVariable('to_temp', to);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/usage/accounts/{{account_resource_id}}/logs/{{log_id}}?from={{from_temp}}&to={{to_temp}}",
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{read_write_key}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
 						},
 						"description": ""
 					},
@@ -1373,11 +1533,11 @@
 								"exec": [
 									"tests[\"Status code is 200\"] = responseCode.code === 200;",
 									"tests[\"Response time is less than 500ms\"] = responseTime < 500;",
-									"test[enviornment.signature] == \"\"",
+									"",
 									"if (responseCode.code === 200) {",
 									"    var jsonData = JSON.parse(responseBody);",
 									"    ",
-									"    tests[\"account_id matches expected account id\"] = jsonData.account.id === environment.account_id;",
+									"    tests[\"account_resource_id matches expected account resource id\"] = jsonData.account.id === environment.account_resource_id;",
 									"    tests[\"retention period is 7 days\"] = jsonData.account.retention_period === 7*24*60*60*1000;",
 									"    tests[\"owner api key is correct\"] = jsonData.account.owner_api_key_id === environment.owner_api_key_id;",
 									"    tests[\"read write key is correct\"] = jsonData.account.rw_api_key === environment.read_write_key;",
@@ -1422,14 +1582,13 @@
 						}
 					],
 					"request": {
-						"url": "{{url}}management/accounts/{{account_id}}",
+						"url": "{{url}}management/accounts/{{account_resource_id}}",
 						"method": "GET",
 						"header": [
 							{
-								"key": "//Date",
+								"key": "Date",
 								"value": "{{time}}",
-								"description": "",
-								"disabled": true
+								"description": ""
 							},
 							{
 								"key": "Content-Type",
@@ -1442,10 +1601,7 @@
 								"description": ""
 							}
 						],
-						"body": {
-							"mode": "formdata",
-							"formdata": []
-						},
+						"body": {},
 						"description": ""
 					},
 					"response": []
@@ -1508,7 +1664,7 @@
 						}
 					],
 					"request": {
-						"url": "{{url}}management/accounts/{{account_id}}/users",
+						"url": "{{url}}management/accounts/{{account_resource_id}}/users",
 						"method": "GET",
 						"header": [
 							{
@@ -1527,10 +1683,7 @@
 								"description": ""
 							}
 						],
-						"body": {
-							"mode": "formdata",
-							"formdata": []
-						},
+						"body": {},
 						"description": ""
 					},
 					"response": []
@@ -1591,7 +1744,7 @@
 						}
 					],
 					"request": {
-						"url": "{{url}}management/accounts/{{account_id}}/users/{{sample_user_id}}",
+						"url": "{{url}}management/accounts/{{account_resource_id}}/users/{{sample_user_id}}",
 						"method": "GET",
 						"header": [
 							{
@@ -1610,10 +1763,7 @@
 								"description": ""
 							}
 						],
-						"body": {
-							"mode": "formdata",
-							"formdata": []
-						},
+						"body": {},
 						"description": ""
 					},
 					"response": []
